@@ -1,0 +1,6 @@
+{
+    "azurerm-": "azure",
+    "aws-": "aws",
+    "gcp-": "google-cloud",
+    "tf-": "terraform"
+}
