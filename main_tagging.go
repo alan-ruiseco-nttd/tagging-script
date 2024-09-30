@@ -12,16 +12,18 @@ import (
 )
 
 func main() {
+	org := os.Getenv("GITHUB_ORG")
+	token := os.Getenv("GITHUB_TOKEN")
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
+		&oauth2.Token{AccessToken: token},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 
 	client := github.NewClient(tc)
 
-	org := "launchbynttdata"
-	// testRepo := "lcaf-component-platform" // Replace with your repository name
+	// Test repos only
+	testRepos := []string{"tf-azurerm-module_reference-key_vault", "tf-aws-module_primitive-firehose_delivery_stream"}
 
 	keywordsFile, err := os.ReadFile("topics.json")
 	if err != nil {
@@ -51,11 +53,15 @@ func main() {
 		opt.Page = resp.NextPage
 	}
 
-	for _, repo := range allRepos {
-		// if *repo.Name == testRepo {
-		topics, _, err := client.Repositories.ListAllTopics(ctx, org, *repo.Name)
+	// Commented out to avoid updating all repos while testing
+	// for _, repo := range allRepos {
+	// 	repoName := *repo.Name
+
+	// Test repos only
+	for _, repoName := range testRepos {
+		topics, _, err := client.Repositories.ListAllTopics(ctx, org, repoName)
 		if err != nil {
-			log.Fatalf("Error listing topics for repo %s: %v", *repo.Name, err)
+			log.Fatalf("Error listing topics for repo %s: %v", repoName, err)
 		}
 
 		currentTopics := make(map[string]bool)
@@ -65,21 +71,21 @@ func main() {
 
 		updated := false
 		for keyword, topic := range keywordTopics {
-			if strings.Contains(*repo.Name, keyword) && !currentTopics[topic] {
+			if strings.Contains(repoName, keyword) && !currentTopics[topic] {
 				topics = append(topics, topic)
 				updated = true
 			}
 		}
 
 		if updated {
-			_, _, err := client.Repositories.ReplaceAllTopics(ctx, org, *repo.Name, topics)
+			_, _, err := client.Repositories.ReplaceAllTopics(ctx, org, repoName, topics)
 			if err != nil {
-				log.Fatalf("Error updating topics for repo %s: %v", *repo.Name, err)
+				log.Fatalf("Error updating topics for repo %s: %v", repoName, err)
 			}
-			log.Printf("Updated topics for repo %s", *repo.Name)
+			log.Printf("Updated topics for repo %s", repoName)
 		} else {
-			log.Printf("No new topics to add for repo %s", *repo.Name)
+			log.Printf("No new topics to add for repo %s", repoName)
 		}
-		// }
+
 	}
 }
