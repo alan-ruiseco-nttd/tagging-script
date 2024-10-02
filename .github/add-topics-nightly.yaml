@@ -23,3 +23,4 @@ jobs:
         export GITHUB_ORG=${{ secrets.GITHUB_ORG }}
         go mod tidy
         go run .github/main_tagging.go .github/types.go
+        
