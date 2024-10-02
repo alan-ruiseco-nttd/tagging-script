@@ -1,0 +1,5 @@
+.pre-commit-config.yaml
+.devcontainer
+
+# VS Code
+.vscode/

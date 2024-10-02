@@ -1,0 +1,14 @@
+{
+    "azurerm-": "azure",
+    "aws-": "aws",
+    "gcp-": "google-cloud",
+    "tf-": "terraform",
+    "helm-": "helm",
+    "module_primitive-": "primitive",
+    "module_collection": "collection",
+    "module_reference-": "reference_architecture",
+    "module_library": "library",
+    "chart_library": "helm_library",
+    "chart_deployment": "helm_deployment",
+    "chart_umbrella": "helm_umbrella"
+}
