@@ -19,8 +19,8 @@ jobs:
     
     - name: Add topics
       run: |
-        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        export GITHUB_ORG=${{ secrets.GITHUB_ORG }}
+        export GITHUB_TOKEN=${{ secrets.OWNER_TOKEN }}
+        export GITHUB_ORG=${{ env.REPO_OWNER }}
         go mod tidy
         go run .github/main_tagging.go .github/types.go
         
