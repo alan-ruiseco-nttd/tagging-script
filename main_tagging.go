@@ -35,7 +35,7 @@ func main() {
 	}
 }
 
-func newGitHubClient(ctx context.Context) *github.Client {
+func newGitHubClient(ctx context.Context) GitHubClient {
 	token := os.Getenv("GITHUB_TOKEN")
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
@@ -44,17 +44,17 @@ func newGitHubClient(ctx context.Context) *github.Client {
 
 	client := github.NewClient(tc)
 
-	return client
+	return clientWrapper{client}
 }
 
-func getAllRepositories(ctx context.Context, client *github.Client, org string) []*github.Repository {
+func getAllRepositories(ctx context.Context, client GitHubClient, org string) []*github.Repository {
 	opt := &github.RepositoryListByOrgOptions{
 		ListOptions: github.ListOptions{PerPage: 100},
 	}
 
 	var allRepos []*github.Repository
 	for {
-		repos, resp, err := client.Repositories.ListByOrg(ctx, org, opt)
+		repos, resp, err := client.ListByOrg(ctx, org, opt)
 		if err != nil {
 			log.Fatalf("Error listing repositories: %v", err)
 		}
@@ -81,8 +81,8 @@ func getKeyWords() map[string]string {
 	return keywordTopics
 }
 
-func getCurrentTopics(ctx context.Context, client *github.Client, org string, repo string) []string {
-	topics, _, err := client.Repositories.ListAllTopics(ctx, org, repo)
+func getCurrentTopics(ctx context.Context, client GitHubClient, org string, repo string) []string {
+	topics, _, err := client.ListAllTopics(ctx, org, repo)
 	if err != nil {
 		log.Fatalf("Error listing topics for repo %s: %v", repo, err)
 	}
@@ -105,9 +105,9 @@ func updateCurrentTopics(topics []string, keywordTopics map[string]string, repoN
 	return topics, updated
 }
 
-func applyNewTopics(ctx context.Context, updated bool, client *github.Client, org string, repoName string, topics []string) {
+func applyNewTopics(ctx context.Context, updated bool, client GitHubClient, org string, repoName string, topics []string) {
 	if updated {
-		_, _, err := client.Repositories.ReplaceAllTopics(ctx, org, repoName, topics)
+		_, _, err := client.ReplaceAllTopics(ctx, org, repoName, topics)
 		if err != nil {
 			log.Fatalf("Error updating topics for repo %s: %v", repoName, err)
 		}
