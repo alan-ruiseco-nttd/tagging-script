@@ -1,0 +1,25 @@
+name: Add topics to repos by org
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  add-topics:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: 1.20
+    
+    - name: Add topics
+      run: |
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+        export GITHUB_ORG=${{ secrets.GITHUB_ORG }}
+        go mod tidy
+        go run .github/main_tagging.go .github/types.go
