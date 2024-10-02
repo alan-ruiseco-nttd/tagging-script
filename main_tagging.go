@@ -17,6 +17,7 @@ func main() {
 	org := os.Getenv("GITHUB_ORG")
 	if org == "" {
 		log.Fatal("GITHUB_ORG environment variable is empty")
+		os.Exit(0)
 	}
 
 	keywordTopics := getKeyWords()
@@ -45,6 +46,7 @@ func newGitHubClient(ctx context.Context) GitHubClient {
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
 		log.Fatal("GITHUB_TOKEN environment variable is empty")
+		os.Exit(0)
 	}
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
