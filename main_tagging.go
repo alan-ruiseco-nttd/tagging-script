@@ -21,16 +21,11 @@ func main() {
 	}
 
 	keywordTopics := getKeyWords()
+	allRepos := getAllRepositories(ctx, client, org)
 
-	// COMMENT THIS TO AVOID UPDATING ALL REPOS WHILE TESTING
-	// allRepos := getAllRepositories(ctx, client, org)
-	// for _, repo := range allRepos {
-	// 	repoName := *repo.Name
-	//
-
-	// TEST REPOS ONLY
-	testRepos := []string{"tf-azurerm-module_reference-key_vault", "tf-aws-module_primitive-firehose_delivery_stream"}
-	for _, repoName := range testRepos {
+	for _, repo := range allRepos {
+		repoName := *repo.Name
+	
 
 		topics := getCurrentTopics(ctx, client, org, repoName)
 
