@@ -22,7 +22,6 @@ jobs:
       run: |
         export GITHUB_TOKEN=${{ secrets.OWNER_TOKEN }}
         export GITHUB_ORG=${{ env.REPO_OWNER }}
-        make configure
         make build
         make run
         
