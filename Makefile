@@ -3,9 +3,14 @@
 # Define the binary name
 BINARY_NAME=main_tagging
 
+# Install dependencies
+.PHONY: deps
+deps:
+	go mod tidy
+
 # Build the Go application
 .PHONY: build
-build: 
+build: deps
 	go build -o $(BINARY_NAME) main_tagging.go types.go
 
 # Run the Go application
