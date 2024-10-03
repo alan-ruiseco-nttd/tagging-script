@@ -24,7 +24,7 @@ jobs:
     - name: Add topics
       run: |
         export GITHUB_TOKEN=${{ secrets.OWNER_TOKEN }}
-        export GITHUB_ORG=$REPO_OWNER
+        export GITHUB_ORG=${{ REPO_OWNER }}
         make build
         make run
         
