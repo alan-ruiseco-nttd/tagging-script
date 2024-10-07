@@ -23,7 +23,9 @@ func main() {
 	keywordTopics := getKeyWords()
 	allRepos := getAllRepositories(ctx, client, org)
 
-	for _, repo := range allRepos {
+	publicRepos := filterPublicRepos(allRepos)
+
+	for _, repo := range publicRepos {
 		repoName := *repo.Name
 	
 
@@ -70,6 +72,16 @@ func getAllRepositories(ctx context.Context, client GitHubClient, org string) []
 		opt.Page = resp.NextPage
 	}
 	return allRepos
+}
+
+func filterPublicRepos(repos []*github.Repository) []*github.Repository {
+	var publicRepos []*github.Repository
+	for _, repo := range repos {
+		if repo.GetPrivate() == false {
+			publicRepos = append(publicRepos, repo)
+		}
+	}
+	return publicRepos
 }
 
 func getKeyWords() map[string]string {
