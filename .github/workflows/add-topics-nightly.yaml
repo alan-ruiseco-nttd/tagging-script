@@ -3,6 +3,7 @@ name: Add topics to repos by org
 on:
   schedule:
     - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   add-topics:
