@@ -2,6 +2,7 @@
     "azurerm-": "azure",
     "aws-": "aws",
     "gcp-": "google-cloud",
+    "sumologic-": "sumologic",
     "tf-": "terraform",
     "helm-": "helm",
     "module_primitive-": "primitive",
@@ -10,5 +11,7 @@
     "module_library": "library",
     "chart_library": "helm-library",
     "chart_deployment": "helm-deployment",
-    "chart_umbrella": "helm-umbrella"
+    "chart_umbrella": "helm-umbrella",
+    "webhook-": "webhook",
+    "pipeline:": "pipeline"
 }
