@@ -27,7 +27,6 @@ func main() {
 
 	for _, repo := range publicRepos {
 		repoName := *repo.Name
-	
 
 		topics := getCurrentTopics(ctx, client, org, repoName)
 
@@ -129,7 +128,5 @@ func applyNewTopics(ctx context.Context, updated bool, client GitHubClient, org 
 			log.Fatalf("Error updating topics for repo %s: %v", repoName, err)
 		}
 		log.Printf("Updated topics for repo %s", repoName)
-	} else {
-		log.Printf("No new topics to add for repo %s", repoName)
 	}
 }
