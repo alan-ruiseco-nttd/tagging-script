@@ -77,7 +77,7 @@ func getAllRepositories(ctx context.Context, client GitHubClient, org string) []
 func filterPublicRepos(repos []*github.Repository) []*github.Repository {
 	var publicRepos []*github.Repository
 	for _, repo := range repos {
-		if repo.GetPrivate() == false {
+		if !repo.GetPrivate() {
 			publicRepos = append(publicRepos, repo)
 		}
 	}

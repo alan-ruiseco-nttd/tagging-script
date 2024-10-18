@@ -22,3 +22,16 @@ run: build
 .PHONY: clean
 clean:
 	rm -f $(BINARY_NAME)
+
+.PHONY: tools-install
+tools-install:
+	asdf pluging add golangci-lint || true
+	asdf pluging add pre-commit || true
+	asdf install
+
+.PHONY: config
+config: tools-install
+	@echo '#!/bin/sh' > .git/hooks/pre-commit
+	@echo 'golangci-lint run' >> .git/hooks/pre-commit
+	@chmod +x .git/hooks/pre-commit
+	@echo "Pre-commit hook has been setup to run golangci-lint"
